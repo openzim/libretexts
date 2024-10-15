@@ -295,8 +295,7 @@ class LibreTextsClient:
         return tree_obj
 
     def get_page_content(self, page: LibraryPage) -> LibraryPageContent:
-        """Returns the content of a given page"""
-
+        """Returns the 'raw' content of a given page"""
         tree = self._get_api_json(
             f"/pages/{page.id}/contents", timeout=HTTP_TIMEOUT_NORMAL_SECONDS
         )

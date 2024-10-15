@@ -8,6 +8,7 @@ import router from './router'
 import loadVuetify from './plugins/vuetify'
 
 import ResizeObserver from 'resize-observer-polyfill'
+import vMathJax from './directives/mathjax'
 
 if (typeof window.ResizeObserver === 'undefined') {
   console.debug('Polyfilling ResizeObserver')
@@ -20,6 +21,7 @@ loadVuetify()
     app.use(createPinia())
     app.use(vuetify)
     app.use(router)
+    app.directive('mathjax', vMathJax)
     app.mount('#app')
   })
   .catch((error) => {

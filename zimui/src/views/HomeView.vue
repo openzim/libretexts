@@ -45,10 +45,12 @@ watch(
   <!-- Reproduce DOM structure of libretexts.org for proper CSS functioning -->
   <main class="elm-skin-container">
     <article id="elm-main-content" class="elm-content-container">
+      <h1>{{ page?.title }}</h1>
       <section
         class="mt-content-container"
         v-if="main.pageContent"
         v-html="main.pageContent.htmlBody"
+        v-mathjax="page"
       ></section>
       <div v-else>Page not found</div>
     </article>

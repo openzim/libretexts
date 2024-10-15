@@ -259,7 +259,45 @@ class Processor:
                 ).model_dump_json(by_alias=True),
             )
 
-            logger.info("  Storing the ZIM UI")
+            logger.info(f"Adding Vue.JS UI files in {self.zimui_dist}")
+            for file in self.zimui_dist.rglob("*"):
+                if file.is_dir():
+                    continue
+                path = str(Path(file).relative_to(self.zimui_dist))
+                logger.debug(f"Adding {path} to ZIM")
+                if path == "index.html":  # Change index.html title and add to ZIM
+                    index_html_path = self.zimui_dist / path
+                    add_item_for(
+                        creator=creator,
+                        path=path,
+                        content=index_html_path.read_text(encoding="utf-8").replace(
+                            "<title>Vite App</title>",
+                            f"<title>{formatted_config.title_format}</title>",
+                        ),
+                        mimetype="text/html",
+                        is_front=True,
+                    )
+                else:
+                    add_item_for(
+                        creator=creator,
+                        path=path,
+                        fpath=file,
+                        is_front=False,
+                    )
+
+            mathjax = (Path(__file__) / "../mathjax").resolve()
+            logger.info(f"Adding MathJax files in {mathjax}")
+            for file in mathjax.rglob("*"):
+                if not file.is_file():
+                    continue
+                path = str(Path(file).relative_to(mathjax.parent))
+                logger.debug(f"Adding {path} to ZIM")
+                add_item_for(
+                    creator=creator,
+                    path=path,
+                    fpath=file,
+                    is_front=False,
+                )
 
             logger.info("  Fetching and storing home page...")
             home = self.libretexts_client.get_home()
@@ -307,32 +345,6 @@ class Processor:
                     # verbose, at least on geo.libretexts.org many assets are just
                     # missing
                     logger.debug(f"Ignoring {asset_path} due to {exc}")
-
-            logger.info(f"Adding Vue.JS UI files in {self.zimui_dist}")
-            for file in self.zimui_dist.rglob("*"):
-                if file.is_dir():
-                    continue
-                path = str(Path(file).relative_to(self.zimui_dist))
-                logger.debug(f"Adding {path} to ZIM")
-                if path == "index.html":  # Change index.html title and add to ZIM
-                    index_html_path = self.zimui_dist / path
-                    add_item_for(
-                        creator=creator,
-                        path=path,
-                        content=index_html_path.read_text(encoding="utf-8").replace(
-                            "<title>Vite App</title>",
-                            f"<title>{formatted_config.title_format}</title>",
-                        ),
-                        mimetype="text/html",
-                        is_front=True,
-                    )
-                else:
-                    add_item_for(
-                        creator=creator,
-                        path=path,
-                        fpath=file,
-                        is_front=False,
-                    )
 
             logger.info("Fetching pages tree")
             pages_tree = self.libretexts_client.get_page_tree()

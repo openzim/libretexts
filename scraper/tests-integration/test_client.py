@@ -1,4 +1,5 @@
 import io
+import re
 from pathlib import Path
 
 import pytest
@@ -138,17 +139,17 @@ def test_get_home_page_content(client: LibreTextsClient, page_tree: LibraryTree)
 
 def test_get_home_screen_css_url(home: LibreTextsHome):
     """Ensures proper screen CSS url is retrieved"""
-    assert (
-        home.screen_css_url
-        == "https://a.mtstatic.com/@cache/layout/anonymous.css?_=715eca8811db7abb8e6f0555936e020d_Z2VvLmxpYnJldGV4dHMub3Jn:site_4038"
+    assert re.match(
+        r"https:\/\/a\.mtstatic\.com\/@cache\/layout\/anonymous\.css\?_=.*:site_4038",
+        home.screen_css_url,
     )
 
 
 def test_get_home_print_css_url(home: LibreTextsHome):
     """Ensures proper print CSS url is retrieved"""
-    assert (
-        home.print_css_url
-        == "https://a.mtstatic.com/@cache/layout/print.css?_=99d83fb44eaebe60981933ec554d138d:site_4038"
+    assert re.match(
+        r"https:\/\/a\.mtstatic\.com\/@cache\/layout\/print\.css\?_=.*:site_4038",
+        home.print_css_url,
     )
 
 

@@ -33,11 +33,10 @@ docker run --rm -it -v "$PWD/output":/output local-libretexts2zim libretexts2zim
 Extract interesting ZIM content and move it to `public` folder.
 
 ```
-rm -rf zimui/public/content
+rm -rf zimui/public/content zimui/public/mathjax
 docker run -it --rm -v $(pwd)/output:/data ghcr.io/openzim/zim-tools:latest zimdump dump --dir=/data/tests_en_libretexts-geo /data/tests_en_libretexts-geo.zim
 sudo chown -R $(id -u -n):$(id -g -n) output/tests_en_libretexts-geo
-mkdir -p zimui/public/content
-mv output/tests_en_libretexts-geo/content/* zimui/public/content
+mv output/tests_en_libretexts-geo/content output/tests_en_libretexts-geo/mathjax zimui/public
 rm -rf output/tests_en_libretexts-geo
 ```
 
