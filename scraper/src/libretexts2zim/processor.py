@@ -10,6 +10,12 @@ from zimscraperlib.download import (
     stream_file,  # pyright: ignore[reportUnknownVariableType]
 )
 from zimscraperlib.image import resize_image
+from zimscraperlib.rewriting.css import CssRewriter
+from zimscraperlib.rewriting.url_rewriting import (
+    ArticleUrlRewriter,
+    HttpUrl,
+    ZimPath,
+)
 from zimscraperlib.zim import Creator
 from zimscraperlib.zim.filesystem import validate_zimfile_creatable
 from zimscraperlib.zim.indexing import IndexData
@@ -22,12 +28,6 @@ from libretexts2zim.client import (
     LibreTextsMetadata,
 )
 from libretexts2zim.constants import LANGUAGE_ISO_639_3, NAME, ROOT_DIR, VERSION, logger
-from libretexts2zim.content_rewriting.css import CssRewriter
-from libretexts2zim.content_rewriting.url_rewriting import (
-    ArticleUrlRewriter,
-    HttpUrl,
-    ZimPath,
-)
 from libretexts2zim.ui import (
     ConfigModel,
     PageContentModel,
